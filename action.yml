@@ -1,0 +1,40 @@
+name: 'Deploy'
+description: 'Deploy Docker Image to Google Cloud Run'
+inputs:
+  service-account-key:
+    description: 'Google Cloud Service Account Key'
+    required: true
+  gcloud-project-id:
+    description: 'Google Cloud Project Id'
+    required: true
+  gcloud-artifact-region:
+    description: 'Region for Google Cloud Artifact'
+    required: true
+  gcloud-artifact-project:
+    description: 'Project for Google Cloud Artifact'
+    required: true
+  gcloud-artifact-repository:
+    description: 'Repository for Google Cloud Artifact'
+    required: true
+  gcloud-artifact-image:
+    description: 'Artifact Image name for Google Cloud Artifact'
+    required: true
+  tag:
+    description: 'Docker Image tag to deploy'
+    required: true
+  new-tag:
+    description: 'Docker Image tag to deploy'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ inputs.service-account-key }}
+        project_id: ${{ inputs.gcloud-project-id }}
+        export_default_credentials: true
+    - name: Add Staging Tag
+      run: |-
+        gcloud container images add-tag \
+        ${{ inputs.gcloud-artifact-region }}-docker.pkg.dev/${{ inputs.gcloud-artifact-project }}/${{ inputs.gcloud-artifact-repository }}/${{ inputs.gcloud-artifact-image }}:${{ inputs.tag }} \
+        ${{ inputs.gcloud-artifact-region }}-docker.pkg.dev/${{ inputs.gcloud-artifact-project }}/${{ inputs.gcloud-artifact-repository }}/${{ inputs.gcloud-artifact-image }}:${{ inputs.new-tag }}
