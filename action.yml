@@ -1,5 +1,5 @@
-name: 'Deploy'
-description: 'Deploy Docker Image to Google Cloud Run'
+name: 'Add Tag'
+description: 'Add Tag to Existing GCloud Docker Artifact Image'
 inputs:
   service-account-key:
     description: 'Google Cloud Service Account Key'
@@ -20,10 +20,10 @@ inputs:
     description: 'Artifact Image name for Google Cloud Artifact'
     required: true
   tag:
-    description: 'Docker Image tag to deploy'
+    description: 'Docker Image tag add tag to'
     required: true
   new-tag:
-    description: 'Docker Image tag to deploy'
+    description: 'Docker Image tag to add'
     required: true
 runs:
   using: "composite"
