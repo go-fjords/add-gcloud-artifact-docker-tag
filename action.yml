@@ -1,33 +1,21 @@
 name: 'Add Tag'
 description: 'Add Tag to Existing GCloud Docker Artifact Image'
 inputs:
-  gcloud-project-id:
-    description: 'Google Cloud Project Id'
-    required: true
-  gcloud-artifact-region:
-    description: 'Region for Google Cloud Artifact'
-    required: true
-  gcloud-artifact-project:
-    description: 'Project for Google Cloud Artifact'
-    required: true
-  gcloud-artifact-repository:
-    description: 'Repository for Google Cloud Artifact'
-    required: true
-  gcloud-artifact-image:
-    description: 'Artifact Image name for Google Cloud Artifact'
-    required: true
-  tag:
-    description: 'Docker Image tag add tag to'
-    required: true
-  new-tag:
-    description: 'Docker Image tag to add'
-    required: true
   gcloud-workload-identity-provider:
     required: true
     description: 'GCloud Identity Provider id to use for federated authentication'
   gcloud-service-account:
     required: true
     description: 'GCloud Service Account to authenticate as, e.g. github-actions@...'
+  gcloud-docker-image-url:
+    required: true
+    description: 'GCloud Docker Image Url'
+  tag:
+    description: 'Docker Image tag add tag to'
+    required: true
+  new-tag:
+    description: 'Docker Image tag to add'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -41,6 +29,6 @@ runs:
     - name: Add Tag
       run: |-
         gcloud container images add-tag \
-        ${{ inputs.gcloud-artifact-region }}-docker.pkg.dev/${{ inputs.gcloud-artifact-project }}/${{ inputs.gcloud-artifact-repository }}/${{ inputs.gcloud-artifact-image }}:${{ inputs.tag }} \
-        ${{ inputs.gcloud-artifact-region }}-docker.pkg.dev/${{ inputs.gcloud-artifact-project }}/${{ inputs.gcloud-artifact-repository }}/${{ inputs.gcloud-artifact-image }}:${{ inputs.new-tag }}
+        ${{ inputs.gcloud-docker-image-url }}:${{ inputs.tag }} \
+        ${{ inputs.gcloud-docker-image-url }}:${{ inputs.new-tag }}
       shell: sh
