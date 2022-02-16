@@ -10,8 +10,8 @@ inputs:
   gcloud-docker-image-url:
     required: true
     description: 'GCloud Docker Image Url'
-  tag:
-    description: 'Docker Image tag add tag to'
+  digest:
+    description: 'Docker Image digest add tag to'
     required: true
   new-tag:
     description: 'Docker Image tag to add'
@@ -27,15 +27,8 @@ runs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v0'
     - name: Add Tag
-      run: |
-        if [[ "${{ inputs.tag }}" == *"sha256"* ]]; then
-          gcloud container images add-tag \
-          ${{ inputs.gcloud-docker-image-url }}@${{ inputs.tag }} \
-          ${{ inputs.gcloud-docker-image-url }}:${{ inputs.new-tag }}
-        else
-          gcloud container images add-tag \
-          ${{ inputs.gcloud-docker-image-url }}:${{ inputs.tag }} \
-          ${{ inputs.gcloud-docker-image-url }}:${{ inputs.new-tag }}
-        fi
-
+      run: |-
+        gcloud container images add-tag \
+        ${{ inputs.gcloud-docker-image-url }}@${{ inputs.digest }} \
+        ${{ inputs.gcloud-docker-image-url }}:${{ inputs.new-tag }}
       shell: sh
