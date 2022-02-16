@@ -29,6 +29,6 @@ runs:
     - name: Add Tag
       run: |-
         gcloud container images add-tag \
-        ${{ inputs.gcloud-docker-image-url }}:${{ inputs.tag }} \
+        ${{ inputs.gcloud-docker-image-url }}@${{ inputs.tag }} \
         ${{ inputs.gcloud-docker-image-url }}:${{ inputs.new-tag }}
       shell: sh
